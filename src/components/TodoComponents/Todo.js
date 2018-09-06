@@ -1,6 +1,11 @@
 import React from 'react';
 
 function Todo(props) {
-    return <li>{props.todo}</li>;
+    return 
+        <div>
+            onClick={() => props.handleToggleComplete(props.todo.id)}
+            <li>{props.todo}</li>
+        </div>
+            
 }
 export default Todo;

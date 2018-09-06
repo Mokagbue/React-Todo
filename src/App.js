@@ -24,10 +24,25 @@ class App extends React.Component {
       });
       }
     };
+
     handleInput = event => {
       this.setState({
         inputText: event.target.value
       });
+    };
+
+    
+
+    toggleTodo = id => {
+      const users = users.map(todo => { //this is copying the State array aka(let todos = [...this.state.todos];)
+        if (todo.id === id) { //find the todo with matching ids
+          todo.completed = !todo.completed;//Toggle Maker here: toggle completed property
+          return todo; //whichever it is return it
+        } else {  
+          return todo; //whichever it is return it
+        }
+      });
+      this.setState({ users }); //setting it up to change the state
     };
 
     render() {
