@@ -8,33 +8,25 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      inputText: ""
+      todos: [],
+      todo: ""
     };
   }
 
   //properties
 
-  addUser =event => {
+  addTodo = event => {
     event.preventDefault();
-    if (this.state.inputText) {
-      this.setState({
-        users: [...this.state.users, this.state.inputText],
-        inputText: ""
-      });
-      }
-    };
+    const todos = this.state.todos.slice();
+    todos.push({ task: this.state.todo, completed: false, id: Date.now() });
+    this.setState({ todos, todo:""});
+  };
 
-    handleInput = event => {
-      this.setState({
-        inputText: event.target.value
-      });
-    };
-
+  changeTodo = event => this.setState({
+    [event.target.name]: event.target.value});
     
-
-    toggleTodo = id => {
-      const users = users.map(todo => { //this is copying the State array aka(let todos = [...this.state.todos];)
+    toggleTodoComplete = id => {
+      let todos = todos.map(todo => { //this is copying the State array aka(let todos = [...this.state.todos];)
         if (todo.id === id) { //find the todo with matching ids
           todo.completed = !todo.completed;//Toggle Maker here: toggle completed property
           return todo; //whichever it is return it
@@ -42,18 +34,29 @@ class App extends React.Component {
           return todo; //whichever it is return it
         }
       });
-      this.setState({ users }); //setting it up to change the state
+      this.setState({ todos }); //setting it up to change the state
+    };
+
+    clearCompleteTodos = event => {
+      event.preventDefault();
+      let todos = this.state.todos.slice();
+      todos = todos.filter(todo => !todo.completed);
+      this.setState({ todos});
     };
 
     render() {
       return (
         <div className="todoListStyles">
           <TodoStyle />
-          <TodoList users={this.state.users} />
+          <TodoList
+            handleToggleComplete={this.toggleTodoComplete}
+            todos={this.state.todos}
+          />
           <TodoForm
-            addUser={this.addUser}
-            inputText={this.state.inputText}
-            handleInput={this.handleInput}
+            value={this.state.todo}
+            handleTodoChange={this.changeTodo}
+            handleAddTodo={this.addTodo}
+            handleClearTodos={this.clearCompletedTodos}
           />
         </div>
       );
